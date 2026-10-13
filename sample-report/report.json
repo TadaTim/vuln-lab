@@ -1,0 +1,154 @@
+{
+  "meta": {
+    "tool": "legacy-vuln-lab scanner",
+    "version": "1.0.0",
+    "target": "/home/hatch/workspace/vuln-lab/demo-app",
+    "scannedAt": "2026-10-13T05:20:50.723Z",
+    "filesScanned": 1,
+    "manifestsScanned": 1,
+    "notice": "Static assessment only. Findings are indicators for authorized review, not proof of exploitability in a deployed environment."
+  },
+  "summary": {
+    "totalFindings": 11,
+    "bySeverity": {
+      "critical": 4,
+      "high": 5,
+      "medium": 2
+    }
+  },
+  "findings": [
+    {
+      "ruleId": "ADV-MINIMIST-CVE-2021-44906",
+      "title": "minimist: prototype pollution via crafted CLI arguments",
+      "severity": "critical",
+      "cwe": "CWE-1321",
+      "cve": "CVE-2021-44906",
+      "package": "minimist",
+      "installedVersion": "1.2.5",
+      "file": "package.json",
+      "line": 6,
+      "evidence": "\"minimist\": \"1.2.5\"",
+      "impact": "This application pins minimist 1.2.5, which is affected by CVE-2021-44906 (minimist: prototype pollution via crafted CLI arguments). Public technical details and exploit tooling exist for this vulnerability; internet-wide scanners actively probe for it. A known-vulnerable dependency converts an unknown risk into a scheduled one.",
+      "remediation": "Upgrade minimist to 1.2.6 or later, re-run the dependency audit, and add automated dependency monitoring (e.g. Dependabot/Renovate) so pinned versions cannot silently age into known-vulnerable releases."
+    },
+    {
+      "ruleId": "EVAL-USE",
+      "title": "Dynamic code evaluation (eval / Function constructor)",
+      "severity": "critical",
+      "cwe": "CWE-95",
+      "file": "app.js",
+      "line": 97,
+      "evidence": "return send(res, 200, String(eval(expr)));",
+      "impact": "If any part of the evaluated string is influenced by a request, an attacker achieves remote code execution with the full privileges of the application process — complete server compromise, not just data exposure.",
+      "remediation": "Remove eval/Function entirely. Replace dynamic behavior with lookup tables, configuration, or a vetted templating engine that does not execute code."
+    },
+    {
+      "ruleId": "SQLI-CONCAT",
+      "title": "SQL query built by string concatenation (SQL injection)",
+      "severity": "critical",
+      "cwe": "CWE-89",
+      "file": "app.js",
+      "line": 66,
+      "evidence": "const query = \"SELECT * FROM users WHERE username = '\" + username +",
+      "impact": "An unauthenticated attacker can manipulate the query through normal input fields to bypass authentication and read or modify the entire database. In a system holding patient records this is a reportable data-breach scenario and the most commonly exploited web flaw in healthcare breaches.",
+      "remediation": "Use parameterized queries / prepared statements everywhere (never interpolate input into SQL text). Add a least-privilege database account and automated regression tests with injection payloads."
+    },
+    {
+      "ruleId": "SQLI-CONCAT",
+      "title": "SQL query built by string concatenation (SQL injection)",
+      "severity": "critical",
+      "cwe": "CWE-89",
+      "file": "app.js",
+      "line": 80,
+      "evidence": "const query = \"SELECT id, name, condition FROM patients WHERE name LIKE '%\" + q + \"%'\";",
+      "impact": "An unauthenticated attacker can manipulate the query through normal input fields to bypass authentication and read or modify the entire database. In a system holding patient records this is a reportable data-breach scenario and the most commonly exploited web flaw in healthcare breaches.",
+      "remediation": "Use parameterized queries / prepared statements everywhere (never interpolate input into SQL text). Add a least-privilege database account and automated regression tests with injection payloads."
+    },
+    {
+      "ruleId": "ADV-AXIOS-CVE-2021-3749",
+      "title": "axios: regular expression denial of service (ReDoS)",
+      "severity": "high",
+      "cwe": "CWE-400",
+      "cve": "CVE-2021-3749",
+      "package": "axios",
+      "installedVersion": "0.21.1",
+      "file": "package.json",
+      "line": 3,
+      "evidence": "\"axios\": \"0.21.1\"",
+      "impact": "This application pins axios 0.21.1, which is affected by CVE-2021-3749 (axios: regular expression denial of service (ReDoS)). Public technical details and exploit tooling exist for this vulnerability; internet-wide scanners actively probe for it. A known-vulnerable dependency converts an unknown risk into a scheduled one.",
+      "remediation": "Upgrade axios to 0.21.2 or later, re-run the dependency audit, and add automated dependency monitoring (e.g. Dependabot/Renovate) so pinned versions cannot silently age into known-vulnerable releases."
+    },
+    {
+      "ruleId": "ADV-JWT-CVE-2022-23529",
+      "title": "jsonwebtoken: improper key handling allows signature verification bypass with crafted payloads",
+      "severity": "high",
+      "cwe": "CWE-347",
+      "cve": "CVE-2022-23529",
+      "package": "jsonwebtoken",
+      "installedVersion": "8.5.1",
+      "file": "package.json",
+      "line": 4,
+      "evidence": "\"jsonwebtoken\": \"8.5.1\"",
+      "impact": "This application pins jsonwebtoken 8.5.1, which is affected by CVE-2022-23529 (jsonwebtoken: improper key handling allows signature verification bypass with crafted payloads). Public technical details and exploit tooling exist for this vulnerability; internet-wide scanners actively probe for it. A known-vulnerable dependency converts an unknown risk into a scheduled one.",
+      "remediation": "Upgrade jsonwebtoken to 9.0.0 or later, re-run the dependency audit, and add automated dependency monitoring (e.g. Dependabot/Renovate) so pinned versions cannot silently age into known-vulnerable releases."
+    },
+    {
+      "ruleId": "ADV-LODASH-CVE-2021-23337",
+      "title": "lodash: command injection via _.template imports key names",
+      "severity": "high",
+      "cwe": "CWE-94",
+      "cve": "CVE-2021-23337",
+      "package": "lodash",
+      "installedVersion": "4.17.20",
+      "file": "package.json",
+      "line": 5,
+      "evidence": "\"lodash\": \"4.17.20\"",
+      "impact": "This application pins lodash 4.17.20, which is affected by CVE-2021-23337 (lodash: command injection via _.template imports key names). Public technical details and exploit tooling exist for this vulnerability; internet-wide scanners actively probe for it. A known-vulnerable dependency converts an unknown risk into a scheduled one.",
+      "remediation": "Upgrade lodash to 4.17.21 or later, re-run the dependency audit, and add automated dependency monitoring (e.g. Dependabot/Renovate) so pinned versions cannot silently age into known-vulnerable releases."
+    },
+    {
+      "ruleId": "HARDCODED-SECRET",
+      "title": "Hardcoded secret committed to source code",
+      "severity": "high",
+      "cwe": "CWE-798",
+      "file": "app.js",
+      "line": 18,
+      "evidence": "const BILLING_API_SECRET = '••••••';",
+      "impact": "The secret is exposed to everyone who has ever had repository access — employees, contractors, backups, and any future repo leak. Rotation is the only remedy once committed, and abuse (e.g. of a billing key) is billed to you.",
+      "remediation": "Rotate the exposed credential immediately, then move secrets to environment variables or a secrets manager. Scrub git history and add pre-commit secret scanning."
+    },
+    {
+      "ruleId": "WEAK-CRYPTO",
+      "title": "Weak hash (MD5/SHA1) protecting passwords or sensitive data",
+      "severity": "high",
+      "cwe": "CWE-327",
+      "file": "app.js",
+      "line": 23,
+      "evidence": "return crypto.createHash('md5').update(pw).digest('hex');",
+      "impact": "MD5 and SHA1 are fast hashes: a single consumer GPU tests billions of candidates per second. If the credential store is ever exposed, effectively every password falls within hours, and users reuse those passwords elsewhere.",
+      "remediation": "Rehash passwords with a password-specific KDF (bcrypt, scrypt, or Argon2id) with per-user salts. Force a password reset on next login for existing accounts."
+    },
+    {
+      "ruleId": "MISSING-SECURITY-HEADERS",
+      "title": "No HTTP security headers configured",
+      "severity": "medium",
+      "cwe": "CWE-693",
+      "file": "app.js",
+      "line": 50,
+      "evidence": "const server = http.createServer((req, res) => {",
+      "impact": "Without headers such as Content-Security-Policy and X-Content-Type-Options, the application is exposed to clickjacking, MIME-confusion, and easier cross-site scripting exploitation — low-effort attacks that automated tooling attempts against every site.",
+      "remediation": "Add a hardened header set (helmet for Express, or explicit response headers) including Content-Security-Policy, X-Content-Type-Options: nosniff, and frame protections; verify with a response-header scan."
+    },
+    {
+      "ruleId": "VERBOSE-ERRORS",
+      "title": "Verbose error output leaks stack traces / internals",
+      "severity": "medium",
+      "cwe": "CWE-209",
+      "file": "app.js",
+      "line": 47,
+      "evidence": "send(res, 500, JSON.stringify({ error: err.message, stack: err.stack, query }), 'application/json');",
+      "impact": "Stack traces and raw queries hand attackers a map of the codebase — file paths, library versions, table and column names — dramatically shortening the time needed to craft a working exploit against the other flaws present.",
+      "remediation": "Return generic error messages to clients; log full detail server-side only. Ensure NODE_ENV=production error handling is enforced and covered by a test that forces an exception."
+    }
+  ]
+}
